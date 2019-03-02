@@ -1,6 +1,6 @@
 # NBT
 
-Maybe This is a simple NBT reader.
+Maybe This is a simple NBT parser.
 
 ## Gets
 
