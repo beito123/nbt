@@ -1,6 +1,16 @@
 # NBT
 
+Maybe This is a simple NBT reader.
 
+## Gets
+
+You can get the package with go get command.
+
+```shell
+go get -u github.com/beito123/nbt
+```
+
+*-u is a option updating the package*
 
 ## License
 
