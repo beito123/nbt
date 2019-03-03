@@ -39,7 +39,7 @@ func main() {
 		0x4C, 0x4F, 0x04, 0x61, 0x06, 0x00, 0x7A, 0x8D, 0xB4, 0xF9, 0x27, 0x00, 0x00, 0x00}
 
 	// Read after uncompressing
-	// If you want to load compressed reader, you should use this
+	// If you want to parse compressed bytes, you should use this
 	stream, err := nbt.FromReader(bytes.NewBuffer(data), nbt.BigEndian)
 	if err != nil {
 		panic(err)
