@@ -28,7 +28,7 @@ func hasGZipHeader(b []byte) bool {
 // FromFile returns new stream from file
 // If the data is comressed, uncompresses with gzip
 func FromFile(path string, order binary.Order) (*Stream, error) {
-	file, err := os.OpenFile(path, os.O_RDWR, os.ModePerm)
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
