@@ -54,6 +54,8 @@ func FromFile(path string, order binary.Order) (*Stream, error) {
 		return nil, err
 	}
 
+	defer file.Close()
+
 	return FromReader(file, order)
 }
 
