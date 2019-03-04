@@ -1804,6 +1804,8 @@ func (t *IntArray) Read(n *Stream) (err error) {
 		return err
 	}
 
+	t.Value = make([]int32, ln)
+
 	for i := 0; i < int(ln); i++ {
 		value, err := n.Stream.Int()
 		if err != nil {
