@@ -1,7 +1,7 @@
 package nbt
 
 /*
-	mc-nbt
+	nbt
 
  	Copyright (c) 2019 beito
 
