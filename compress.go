@@ -20,8 +20,23 @@ import (
 	"github.com/beito123/binary"
 )
 
+// DefaultCompressionLevel set the default compression level when it's compressing
+const DefaultCompressionLevel = -1
+
 // CompressType is a compression type
 type CompressType int
+
+// DefaultCompression returns the default compression level
+func (ct CompressType) DefaultCompression() int {
+	switch ct {
+	case CompressGZip:
+		return gzip.DefaultCompression
+	case CompressZlib:
+		return zlib.DefaultCompression
+	}
+
+	return 0
+}
 
 const (
 	// CompressGZip compresses with gzip
@@ -98,9 +113,14 @@ func FromReader(reader io.Reader, order binary.Order) (*Stream, error) {
 
 // Compress compresses stream's bytes
 // You can use compression level in "compress/gzip" and "compress/zlib" for level
+// If you set the default compression level, you can set DefaultCompressionLevel
 // This often is used for player and level data
 func Compress(s *Stream, typ CompressType, level int) ([]byte, error) {
 	buf := bytes.NewBuffer([]byte{})
+
+	if level == DefaultCompressionLevel {
+		level = typ.DefaultCompression()
+	}
 
 	switch typ {
 	case CompressGZip:
