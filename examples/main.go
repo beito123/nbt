@@ -90,7 +90,7 @@ func write() {
 	fmt.Println("generated ./nbt.dat")
 
 	// If you want to compress for level.dat etc...
-	data, err := nbt.Compress(stream)
+	data, err := nbt.Compress(stream, nbt.CompressGZip, nbt.DefaultCompressionLevel)
 	if err != nil {
 		panic(err)
 	}

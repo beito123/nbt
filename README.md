@@ -99,12 +99,16 @@ func main(){
 	// 0x0024: 67 61 00                            | ga.
 	ioutil.WriteFile("./nbt.dat", stream.Bytes(), os.ModePerm)
 
+	fmt.Println("generated ./nbt.dat")
+
 	// If you want to compress for level.dat etc...
-	data, err := nbt.Compress(stream)
+	data, err := nbt.Compress(stream, nbt.CompressGZip, nbt.DefaultCompressionLevel)
 	if err != nil {
 		panic(err)
 	}
 
 	ioutil.WriteFile("./nbt_compressed.dat", data, os.ModePerm)
+
+	fmt.Println("generated ./nbt_compressed.dat")
 }
 ```
