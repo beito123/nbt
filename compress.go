@@ -62,7 +62,7 @@ func hasZlibHeader(b []byte) bool {
 //
 
 // FromFile returns new stream from file
-// If the data is comressed, uncompresses with gzip
+// If the bytes is compressed, it will uncompresses
 func FromFile(path string, order binary.Order) (*Stream, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -75,13 +75,19 @@ func FromFile(path string, order binary.Order) (*Stream, error) {
 }
 
 // FromReader returns new stream from Reader
-// If the data is compressed, uncompresses
+// If the bytes is compressed, it will uncompresses
 func FromReader(reader io.Reader, order binary.Order) (*Stream, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
 
+	return FromBytes(b, order)
+}
+
+// FromBytes returns new stream with bytes
+// If the bytes is compressed, it will uncompresses
+func FromBytes(b []byte, order binary.Order) (*Stream, error) {
 	if hasGZipHeader(b) {
 		read, err := gzip.NewReader(bytes.NewBuffer(b))
 		if err != nil {
