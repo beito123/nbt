@@ -150,6 +150,9 @@ type Tag interface {
 
 	// ToIntArray returns value as []int32
 	ToIntArray() ([]int32, error)
+
+	// ToLongArray returns value as []int64
+	ToLongArray() ([]int64, error)
 }
 
 // End is a end tag
@@ -271,6 +274,11 @@ func (t *End) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *End) ToIntArray() ([]int32, error) {
 	return []int32{}, nil
+}
+
+// ToLongArray returns value as []int64
+func (t *End) ToLongArray() ([]int64, error) {
+	return []int64{}, nil
 }
 
 // Byte is a tag for a byte
@@ -396,6 +404,11 @@ func (t *Byte) ToIntArray() ([]int32, error) {
 	return []int32{int32(t.Value)}, nil
 }
 
+// ToLongArray returns value as []int64
+func (t *Byte) ToLongArray() ([]int64, error) {
+	return []int64{int64(t.Value)}, nil
+}
+
 // Short is a tag for a short
 type Short struct {
 	name  string
@@ -517,6 +530,11 @@ func (t *Short) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *Short) ToIntArray() ([]int32, error) {
 	return []int32{int32(t.Value)}, nil
+}
+
+// ToLongArray returns value as []int64
+func (t *Short) ToLongArray() ([]int64, error) {
+	return []int64{int64(t.Value)}, nil
 }
 
 // Int is a tag for an int
@@ -642,6 +660,11 @@ func (t *Int) ToIntArray() ([]int32, error) {
 	return []int32{int32(t.Value)}, nil
 }
 
+// ToLongArray returns value as []int64
+func (t *Int) ToLongArray() ([]int64, error) {
+	return []int64{int64(t.Value)}, nil
+}
+
 // Long is a tag for an int64
 type Long struct {
 	name  string
@@ -763,6 +786,11 @@ func (t *Long) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *Long) ToIntArray() ([]int32, error) {
 	return []int32{int32(t.Value >> 32), int32(t.Value)}, nil
+}
+
+// ToLongArray returns value as []int64
+func (t *Long) ToLongArray() ([]int64, error) {
+	return []int64{t.Value}, nil
 }
 
 // Float is a tag for a float
@@ -888,6 +916,11 @@ func (t *Float) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
 }
 
+// ToLongArray returns value as []int64
+func (t *Float) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
+}
+
 // Double is a tag for float64
 type Double struct {
 	name  string
@@ -1009,6 +1042,11 @@ func (t *Double) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *Double) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
+}
+
+// ToLongArray returns value as []int64
+func (t *Double) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
 }
 
 // ByteArray is a tag for []byte
@@ -1142,6 +1180,11 @@ func (t *ByteArray) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *ByteArray) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
+}
+
+// ToLongArray returns value as []int64
+func (t *ByteArray) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
 }
 
 // String is a tag for string
@@ -1278,6 +1321,11 @@ func (t *String) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *String) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
+}
+
+// ToLongArray returns value as []int64
+func (t *String) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
 }
 
 // List is a container for tags
@@ -1464,6 +1512,11 @@ func (t *List) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
 }
 
+// ToLongArray returns value as []int64
+func (t *List) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
+}
+
 // Compound is a map contained tags
 type Compound struct {
 	name string
@@ -1625,6 +1678,11 @@ func (t *Compound) ToString() (string, error) {
 // ToIntArray returns value as []int32
 func (t *Compound) ToIntArray() ([]int32, error) {
 	return nil, errors.New("couldn't cast to []int32")
+}
+
+// ToLongArray returns value as []int64
+func (t *Compound) ToLongArray() ([]int64, error) {
+	return nil, errors.New("couldn't cast to []int64")
 }
 
 // Get gets a tag with name from Compound
@@ -1826,7 +1884,7 @@ func (t *IntArray) Write(n *Stream) error {
 	}
 
 	for _, value := range t.Value {
-		err = n.Stream.PutInt(int32(value))
+		err = n.Stream.PutInt(value)
 		if err != nil {
 			return err
 		}
@@ -1930,5 +1988,173 @@ func (t *IntArray) ToString() (string, error) {
 
 // ToIntArray returns value as []int32
 func (t *IntArray) ToIntArray() ([]int32, error) {
+	return t.Value, nil
+}
+
+// ToLongArray returns value as []int64
+func (t *IntArray) ToLongArray() ([]int64, error) {
+	result := make([]int64, len(t.Value))
+	for i := 0; i < len(result); i++ {
+		result[i] = int64(t.Value[i])
+	}
+
+	return result, nil
+}
+
+// LongArray is a tag for a array of longs
+type LongArray struct {
+	name string
+
+	Value []int64
+}
+
+// ID returns tag id
+func (t *LongArray) ID() byte {
+	return IDTagLongArray
+}
+
+// Name returns tag's name
+func (t *LongArray) Name() string {
+	return t.name
+}
+
+// SetName set name in tag
+func (t *LongArray) SetName(name string) {
+	t.name = name
+}
+
+// Read reads tag from Stream
+func (t *LongArray) Read(n *Stream) (err error) {
+	ln, err := n.Stream.Int()
+	if err != nil {
+		return err
+	}
+
+	t.Value = make([]int64, ln)
+
+	for i := 0; i < int(ln); i++ {
+		value, err := n.Stream.Long()
+		if err != nil {
+			return err
+		}
+
+		t.Value[i] = value
+	}
+
+	return err
+}
+
+// Write writes tag for Stream
+func (t *LongArray) Write(n *Stream) error {
+	err := n.Stream.PutLong(int64(len(t.Value)))
+	if err != nil {
+		return err
+	}
+
+	for _, value := range t.Value {
+		err = n.Stream.PutLong(value)
+		if err != nil {
+			return err
+		}
+	}
+
+	return err
+}
+
+// ToBool returns value as bool
+func (t *LongArray) ToBool() (bool, error) {
+	return len(t.Value) > 0, nil
+}
+
+// ToByte returns value as byte
+func (t *LongArray) ToByte() (byte, error) {
+	return 0, errors.New("couldn't cast to byte")
+}
+
+// ToRune returns value as rune
+func (t *LongArray) ToRune() (rune, error) {
+	return 0, errors.New("couldn't cast to rune")
+}
+
+// ToInt returns value as int
+func (t *LongArray) ToInt() (int, error) {
+	return 0, errors.New("couldn't cast to int")
+}
+
+// ToUInt returns value as uint
+func (t *LongArray) ToUInt() (uint, error) {
+	return 0, errors.New("couldn't cast to uint")
+}
+
+// ToUInt8 returns value as uint8
+func (t *LongArray) ToUInt8() (uint8, error) {
+	return 0, errors.New("couldn't cast to uint8")
+}
+
+// ToUInt16 returns value as uint16
+func (t *LongArray) ToUInt16() (uint16, error) {
+	return 0, errors.New("couldn't cast to uint16")
+}
+
+// ToUInt32 returns value as uint32
+func (t *LongArray) ToUInt32() (uint32, error) {
+	return 0, errors.New("couldn't cast to uint32")
+}
+
+// ToUInt64 returns value as uint64
+func (t *LongArray) ToUInt64() (uint64, error) {
+	return 0, errors.New("couldn't cast to uint64")
+}
+
+// ToInt8 returns value as int8
+func (t *LongArray) ToInt8() (int8, error) {
+	return 0, errors.New("couldn't cast to int8")
+}
+
+// ToInt16 returns value as int16
+func (t *LongArray) ToInt16() (int16, error) {
+	return 0, errors.New("couldn't cast to int16")
+}
+
+// ToInt32 returns value as int32
+func (t *LongArray) ToInt32() (int32, error) {
+	return 0, errors.New("couldn't cast to int32")
+}
+
+// ToInt64 returns value as int64
+func (t *LongArray) ToInt64() (int64, error) {
+	return 0, errors.New("couldn't cast to int64")
+}
+
+// ToFloat32 returns value as float32
+func (t *LongArray) ToFloat32() (float32, error) {
+	return 0, errors.New("couldn't cast to float32")
+}
+
+// ToFloat64 returns value as float64
+func (t *LongArray) ToFloat64() (float64, error) {
+	return 0, errors.New("couldn't cast to float64")
+}
+
+// ToByteArray returns value as []byte
+func (t *LongArray) ToByteArray() ([]byte, error) {
+	return nil, errors.New("couldn't cast to []byte")
+}
+
+// ToString returns value as string
+func (t *LongArray) ToString() (string, error) {
+	str := "[ "
+	for i, v := range t.Value {
+		str += strconv.Itoa(int(v))
+		if i != (len(t.Value) - 1) { // not last
+			str += ", "
+		}
+	}
+
+	return str + " ]", nil
+}
+
+// ToLongArray returns value as []int64
+func (t *LongArray) ToLongArray() ([]int64, error) {
 	return t.Value, nil
 }

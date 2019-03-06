@@ -61,8 +61,11 @@ const (
 	// IDTagCompound is a list of named tags.
 	IDTagCompound
 
-	// IDTagIntArray is a list of int.
+	// IDTagIntArray is a array for int(4bytes).
 	IDTagIntArray
+
+	// IDTagLongArray is a array for long(8bytes).
+	IDTagLongArray
 )
 
 var (
