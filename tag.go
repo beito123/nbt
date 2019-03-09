@@ -1833,6 +1833,16 @@ func (t *Compound) GetIntArray(name string) ([]int32, error) {
 	return tag.ToIntArray()
 }
 
+// GetLongArray gets a tag with name as []int64
+func (t *Compound) GetLongArray(name string) ([]int64, error) {
+	tag, ok := t.Get(name)
+	if !ok {
+		return nil, errors.New("couldn't find tag " + name)
+	}
+
+	return tag.ToLongArray()
+}
+
 // IntArray is a tag for a int array
 type IntArray struct {
 	name string
