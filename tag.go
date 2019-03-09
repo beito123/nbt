@@ -43,6 +43,8 @@ func getTagByID(id byte) Tag {
 		return new(Compound)
 	case IDTagIntArray:
 		return new(IntArray)
+	case IDTagLongArray:
+		return new(LongArray)
 	}
 
 	return nil
@@ -75,6 +77,8 @@ func GetTagName(id byte) string {
 		return "Compound"
 	case IDTagIntArray:
 		return "IntArray"
+	case IDTagLongArray:
+		return "LongArray"
 	}
 
 	return "Unknown"
@@ -2162,6 +2166,11 @@ func (t *LongArray) ToString() (string, error) {
 	}
 
 	return str + " ]", nil
+}
+
+// ToIntArray returns value as []int32
+func (t *LongArray) ToIntArray() ([]int32, error) {
+	return nil, errors.New("couldn't cast to []int32")
 }
 
 // ToLongArray returns value as []int64
