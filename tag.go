@@ -159,6 +159,110 @@ type Tag interface {
 	ToLongArray() ([]int64, error)
 }
 
+// NewEndTag returns a new End tag
+func NewEndTag(name string) *End {
+	return &End{
+		name: name,
+	}
+}
+
+// NewByteTag returns a new Byte tag
+func NewByteTag(name string, val int8) *Byte {
+	return &Byte{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewShortTag returns a new Short tag
+func NewShortTag(name string, val int16) *Short {
+	return &Short{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewIntTag returns a new Int tag
+func NewIntTag(name string, val int32) *Int {
+	return &Int{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewLongTag returns a new Long tag
+func NewLongTag(name string, val int64) *Long {
+	return &Long{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewFloatTag returns a new Float tag
+func NewFloatTag(name string, val float32) *Float {
+	return &Float{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewDoubleTag returns a new Double tag
+func NewDoubleTag(name string, val float64) *Double {
+	return &Double{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewByteArrayTag returns a new ByteArray tag
+func NewByteArrayTag(name string, val []byte) *ByteArray {
+	return &ByteArray{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewStringTag returns a new String tag
+func NewStringTag(name string, val string) *String {
+	return &String{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewListTag returns a new List tag
+func NewListTag(name string, val []Tag, typ byte) *List {
+	return &List{
+		name:     name,
+		Value:    val,
+		ListType: typ,
+	}
+}
+
+// NewCompoundTag returns a new Compound tag
+func NewCompoundTag(name string, val map[string]Tag) *Compound {
+	return &Compound{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewIntArrayTag returns a new IntArray tag
+func NewIntArrayTag(name string, val []int32) *IntArray {
+	return &IntArray{
+		name:  name,
+		Value: val,
+	}
+}
+
+// NewLongArrayTag returns a new LongArray tag
+func NewLongArrayTag(name string, val []int64) *LongArray {
+	return &LongArray{
+		name:  name,
+		Value: val,
+	}
+}
+
 // End is a end tag
 // It shows stream end of tag data
 type End struct {
